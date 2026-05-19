@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  OPERATIONS
+  USER
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TransactionType {
+  INBOUND
+  OUTBOUND
+  STOCKTRANSFER
+}
+
+model User {
+  id           String                 @id @default(cuid())
+  code         String?                @unique
+  name         String
+  email        String                 @unique
+  phone        String?
+  password     String
+  role         UserRole               @default(USER)
+  active       Boolean                @default(true)
+  transactions InventoryTransaction[] @relation("TransactionCreatedBy")
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+}
+
+model Customer {
+  id           String                 @id @default(cuid())
+  code         String                 @unique
+  name         String
+  company      String?
+  email        String?
+  phone        String?
+  address      String?                @db.Text
+  status       CustomerStatus         @default(ACTIVE)
+  tier         String?
+  groupName    String?
+  products     Product[]
+  transactions InventoryTransaction[]
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+}
+ 
+model Product {
+  id               String                     @id @default(cuid())
+  code             String                     @unique
+  name             String
+  customerId       String
+  customer         Customer                   @relation(fields: [customerId], references: [id])
+  unit             String                     @default("Nos")
+  serialTracking   Boolean                    @default(false)
+  status           ProductStatus              @default(ACTIVE)
+  description      String?                    @db.Text
+  inventoryItems   InventoryItem[]
+  transactionLines InventoryTransactionLine[]
+  createdAt        DateTime                   @default(now())
+  updatedAt        DateTime                   @updatedAt
+
+  @@index([customerId])
+}
+
+model Location {
+  id                 String                 @id @default(cuid())
+  code               String                 @unique
+  name               String
+  type               String?
+  active             Boolean                @default(true)
+  inventoryItems     InventoryItem[]
+  fromTransactions   InventoryTransaction[] @relation("FromLocation")
+  toTransactions     InventoryTransaction[] @relation("ToLocation")
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+}
+
+model InventoryItem {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+  serialNo   String   @default("")
+  qty        Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([productId, locationId, serialNo])
+  @@index([productId])
+  @@index([locationId])
+  @@index([qty])
+}
+
+model InventoryTransaction {
+  id             String                     @id @default(cuid())
+  referenceNo    String                     @unique
+  type           TransactionType
+  customerId     String?
+  customer       Customer?                  @relation(fields: [customerId], references: [id])
+  fromLocationId String?
+  fromLocation   Location?                  @relation("FromLocation", fields: [fromLocationId], references: [id])
+  toLocationId   String?
+  toLocation     Location?                  @relation("ToLocation", fields: [toLocationId], references: [id])
+  note           String?                    @db.Text
+  createdById    String
+  createdBy      User                       @relation("TransactionCreatedBy", fields: [createdById], references: [id])
+  lines          InventoryTransactionLine[]
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+
+  @@index([type])
+  @@index([createdAt])
+  @@index([customerId])
+}
+
+model InventoryTransactionLine {
+  id            String               @id @default(cuid())
+  transactionId String
+  transaction   InventoryTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product              @relation(fields: [productId], references: [id])
+  serialNo      String               @default("")
+  qty           Int
+  note          String?              @db.Text
+  createdAt     DateTime             @default(now())
+
+  @@index([productId])
+  @@index([transactionId])
+}

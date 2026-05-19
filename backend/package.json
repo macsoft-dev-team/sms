@@ -1,0 +1,33 @@
+{
+  "name": "inventory-backend-full",
+  "version": "1.0.0",
+  "description": "Full Node Express MySQL Prisma backend for StockSuite Inventory WMS.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "@prisma/client": "latest",
+    "bcryptjs": "latest",
+    "compression": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "helmet": "latest",
+    "jsonwebtoken": "latest",
+    "morgan": "latest",
+    "multer": "latest",
+    "socket.io": "latest",
+    "xlsx": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest",
+    "prisma": "latest"
+  }
+}
