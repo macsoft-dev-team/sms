@@ -1,7 +1,7 @@
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const { PrismaClient } = require("../../generated/prisma/client");
 const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
 
 // Initialize the Postgres adapter
 const adapter = new PrismaMariaDb({

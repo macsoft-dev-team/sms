@@ -3,7 +3,7 @@ const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const { PrismaClient, UserRole } = require("../generated/prisma");
 const path = require("path");
 
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
 
 const adapter = new PrismaMariaDb({
   host: process.env.DATABASE_HOST,
@@ -22,7 +22,7 @@ async function main() {
   const userPassword = await bcrypt.hash("user123", 10);
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@app.local" },
+    where: { email: "admin@macsoft.com" },
     update: {
       name: "Admin",
       password: adminPassword,
@@ -32,7 +32,7 @@ async function main() {
     create: {
       code: "USR001",
       name: "Admin",
-      email: "admin@app.local",
+      email: "admin@macsoft.com",
       password: adminPassword,
       role: UserRole.ADMIN,
       active: true,
@@ -40,7 +40,7 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: "user@app.local" },
+    where: { email: "user@macsoft.com" },
     update: {
       name: "Store User",
       password: userPassword,
@@ -50,7 +50,7 @@ async function main() {
     create: {
       code: "USR002",
       name: "Store User",
-      email: "user@app.local",
+      email: "user@macsoft.com",
       password: userPassword,
       role: UserRole.OPERATIONS,
       active: true,
@@ -58,31 +58,31 @@ async function main() {
   });
 
   const customer1 = await prisma.customer.upsert({
-    where: { code: "CUS001" },
+    where: { code: "CRI001" },
     update: {
-      name: "Walk-in Customer",
+      name: "CRI Pumps",
       groupName: "Retail",
       status: "ACTIVE",
     },
     create: {
-      code: "CUS001",
-      name: "Walk-in Customer",
+      code: "CRI001",
+      name: "CRI Pumps",
       groupName: "Retail",
       status: "ACTIVE",
     },
   });
 
   const customer2 = await prisma.customer.upsert({
-    where: { code: "CUS002" },
+    where: { code: "KSB001" },
     update: {
-      name: "Acme Retail",
+      name: "KSB",
       groupName: "B2B",
       phone: "+91 90000 00000",
       status: "ACTIVE",
     },
     create: {
-      code: "CUS002",
-      name: "Acme Retail",
+      code: "KSB001",
+      name: "KSB",
       groupName: "B2B",
       phone: "+91 90000 00000",
       status: "ACTIVE",

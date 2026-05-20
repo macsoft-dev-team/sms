@@ -1,5 +1,5 @@
 const path = require("path");
-require("dotenv").config({ path: path.resolve(process.cwd(), ".env") });
+require("dotenv").config({ path: path.resolve(process.cwd(), ".env"), quiet: true });
 
 module.exports = {
   env: process.env.NODE_ENV || "development",

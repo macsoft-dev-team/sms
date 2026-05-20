@@ -10,7 +10,7 @@ const { notFound, errorHandler } = require("./middlewares/error");
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.clientUrl, credentials: true }));
+app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(compression());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));

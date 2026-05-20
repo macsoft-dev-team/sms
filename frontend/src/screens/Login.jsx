@@ -21,7 +21,7 @@ const fadeUp = {
 
 export default function Login() {
   const { login, status, error, clearError } = useAuth();
-  const [form, setForm] = useState({ email: "admin@app.local", password: "admin123" });
+  const [form, setForm] = useState({ email: "admin@macsoft.com", password: "admin123" });
 
   const submit = async (event) => {
     event.preventDefault();
@@ -32,8 +32,8 @@ export default function Login() {
     clearError();
     setForm(
       type === "admin"
-        ? { email: "admin@app.local", password: "admin123" }
-        : { email: "user@app.local", password: "user123" }
+        ? { email: "admin@macsoft.com", password: "admin123" }
+        : { email: "user@macsoft.com", password: "user123" }
     );
   };
 
@@ -59,7 +59,7 @@ export default function Login() {
           </motion.div> */}
 
           <motion.h1 variants={fadeUp} className="max-w-2xl text-5xl font-black tracking-tight text-slate-900 leading-[1.15]">
-            Run stock operations from one <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-500">connected workspace.</span>
+            Run stock operations from one <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-500">connected workspace.</span>
           </motion.h1>
 
   {/*         <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
@@ -150,7 +150,7 @@ export default function Login() {
                 >
                   <div>
                     <span className="font-bold text-slate-900">Admin</span>
-                    <span className="ml-2 text-xs font-medium text-slate-500">admin@app.local</span>
+                    <span className="ml-2 text-xs font-medium text-slate-500">admin@macsoft.com</span>
                   </div>
                   <ArrowRight size={14} className="text-emerald-600 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-1" />
                 </button>
@@ -161,7 +161,7 @@ export default function Login() {
                 >
                   <div>
                     <span className="font-bold text-slate-900">Operations</span>
-                    <span className="ml-2 text-xs font-medium text-slate-500">user@app.local</span>
+                    <span className="ml-2 text-xs font-medium text-slate-500">user@macsoft.com</span>
                   </div>
                   <ArrowRight size={14} className="text-emerald-600 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-1" />
                 </button>
